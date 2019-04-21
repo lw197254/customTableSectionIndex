@@ -7,12 +7,12 @@
 //
 
 #import "CustomTableViewIndexView.h"
-
+#import <Masonry.h>
 @interface CustomTableViewIndexView()
 @property(nonatomic,copy) CustomTableViewIndexViewSelectBlock selectBlock;
 
 @property(nonatomic,strong)NSArray* titleArray;
-@property(nonatomic,strong)NSMutableArray* titleLabelArray;
+
 @property(nonatomic,strong)UILabel*label;
 
 
@@ -28,17 +28,15 @@
 //    }
     
     // 利用EnumerateSequence遍历可以获得带index的元组
-    if (!self.titleLabelArray) {
-        self.titleLabelArray = [[NSMutableArray alloc]init];
-    }
+ 
     if (!self.label) {
-        self.label = [Tool createLabelWithTitle:@""];
+        self.label = [[UILabel alloc]init];
         if(self.textColor){
             self.label.textColor = self.textColor;
         }else{
-            self.label.textColor = BlueColor447FF5;
+            self.label.textColor = [UIColor blueColor];
         }
-        self.label.font = FontOfSize(12);
+        self.label.font = [UIFont systemFontOfSize:15];
         NSDictionary *attributes = @{NSFontAttributeName:self.label.font};
         CGSize textSize = [@"热" boundingRectWithSize:CGSizeMake(100, 100) options:NSStringDrawingTruncatesLastVisibleLine attributes:attributes context:nil].size;
         self.labelFontHeight = textSize.height;
@@ -125,13 +123,13 @@
     
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
        
-        float linespace = 0;
+        float linespace = 5;
    
-        if (self.titleArray.count > 1&&k == 1) {
-            
-          linespace  =  (self.frame.size.height -self.titleArray.count*self.labelFontHeight)/(self.titleArray.count+1);
-        }
-       
+//        if (self.titleArray.count > 1&&k == 1) {
+//
+//          linespace  =  (self.frame.size.height -self.titleArray.count*self.labelFontHeight)/(self.titleArray.count+1);
+//        }
+    
         paragraphStyle.lineSpacing = linespace;// 字体的行间距
         
         paragraphStyle.headIndent = 0;
@@ -147,18 +145,10 @@
     
      NSLog(@"%f",self.label.frame.size.height);
 }
--(instancetype)init{
-    if (self = [super init]) {
-      
-//        let indexViewH = (kScreenH - 113) * 0.91
-//        // 这样设置Y保证indexview居中显示
-//        let indexViewY = ((kScreenH - 113) - indexViewH) * 0.5 + 64
-//        let indexView = UIView(frame: CGRect(x: kScreenW - 15, y: indexViewY, width: 10, height: indexViewH))
+-(instancetype)initWithFrame:(CGRect)frame{
+    if (self = [super initWithFrame:frame]) {
         UITapGestureRecognizer* touch = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(indexViewTap:)];
         [self addGestureRecognizer:touch];
-//        UIPanGestureRecognizer*pan = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(pan:)];
-//        [self addGestureRecognizer:pan];
-        self.tableViewSectionIndexSelectedView = [[TableViewSectionIndexSelectedView alloc]init];
     }
     return self;
 }
@@ -174,7 +164,7 @@
 }
 -(void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     self.isHightLighted = NO;
-   [self.tableViewSectionIndexSelectedView hide];
+//   [self.tableViewSectionIndexSelectedView hide];
 }
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
    self.isHightLighted = YES;
@@ -205,11 +195,11 @@
     if (self.selectBlock) {
         self.selectBlock(title,index);
     }
-    [self.tableViewSectionIndexSelectedView showWithTitle:title onView:self.superview];
+//    [self.tableViewSectionIndexSelectedView showWithTitle:title onView:self.superview];
 }
 -(void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     self.isHightLighted = NO;
-    [self.tableViewSectionIndexSelectedView hide];
+//    [self.tableViewSectionIndexSelectedView hide];
 }
 -(void)setIsHightLighted:(BOOL)isHightLighted{
     if (_isHightLighted!=isHightLighted) {

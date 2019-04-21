@@ -7,8 +7,10 @@
 //
 
 #import "UITableView+CustomTableViewIndexView.h"
+#import <Masonry.h>
+#import <objc/runtime.h>
 static char*const customIndexViewKey = "customIndexView";
-static char*const tableViewSelectedViewKey = "tableViewSelectedViewKey";
+
 static char*const customIndexViewEdgeInsetsKey = "customIndexViewEdgeInsetsKey";
 //static char*const customTableViewIndexViewSelectBlockKey = "customTableViewIndexViewSelectBlockKey";
 @implementation UITableView (CustomTableViewIndexView)
@@ -44,20 +46,12 @@ static char*const customIndexViewEdgeInsetsKey = "customIndexViewEdgeInsetsKey";
             
             
         }];
+//        self.contentInset = UIEdgeInsetsMake(0, 0, 0, 100);
         self.customIndexView = obj;
     }
     return obj;
 }
--(void)setTableViewSectionIndexSelectedView:(TableViewSectionIndexSelectedView *)tableViewSectionIndexSelectedView{
-    objc_setAssociatedObject(self, tableViewSelectedViewKey,tableViewSectionIndexSelectedView , OBJC_ASSOCIATION_RETAIN);
-}
--(TableViewSectionIndexSelectedView*)tableViewSectionIndexSelectedView{
-    TableViewSectionIndexSelectedView*obj =  objc_getAssociatedObject(self, tableViewSelectedViewKey) ;
-    if (!obj) {
-        obj = [[TableViewSectionIndexSelectedView alloc]init];
-    }
-    return obj;
-}
+
 
 -(void)setCustomIndexViewTextColor:(UIColor*)textColor{
     self.customIndexView.textColor = textColor;
